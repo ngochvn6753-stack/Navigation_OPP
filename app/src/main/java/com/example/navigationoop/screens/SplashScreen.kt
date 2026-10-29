@@ -20,6 +20,10 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.foundation.Canvas
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.foundation.Canvas
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeJoin
 
 @Composable
 fun SplashScreen(
@@ -43,46 +47,66 @@ fun SplashScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
+        val logoBlue = Color(0xFF3355FF)
+
         Box(
             modifier = Modifier
-                .size(64.dp)
-                .background(
-                    Color.White,
-                    RoundedCornerShape(14.dp)
-                ),
+                .size(88.dp)
+                .background(logoBlue, RoundedCornerShape(19.dp)),
             contentAlignment = Alignment.Center
         ) {
-            Canvas(
-                modifier = Modifier.size(36.dp)
-            ) {
-                val blue = Color(0xFF3155E7)
+            Canvas(modifier = Modifier.size(58.dp)) {
+                val w = size.width
+                val stroke = w * 0.082f
 
-                for (i in 0..2) {
-                    val y = size.height * (0.25f + i * 0.25f)
+                val y1 = size.height * 0.34f
+                val y2 = size.height * 0.68f
 
-                    drawLine(
-                        color = blue,
-                        start = Offset(size.width * 0.12f, y),
-                        end = Offset(size.width * 0.18f, y + 4.dp.toPx()),
-                        strokeWidth = 2.dp.toPx(),
-                        cap = StrokeCap.Round
-                    )
+                val cx = w * 0.20f
+                val r = w * 0.16f
 
-                    drawLine(
-                        color = blue,
-                        start = Offset(size.width * 0.18f, y + 4.dp.toPx()),
-                        end = Offset(size.width * 0.28f, y - 4.dp.toPx()),
-                        strokeWidth = 2.dp.toPx(),
-                        cap = StrokeCap.Round
-                    )
-                    drawLine(
-                        color = blue,
-                        start = Offset(size.width * 0.40f, y),
-                        end = Offset(size.width * 0.88f, y),
-                        strokeWidth = 2.5.dp.toPx(),
-                        cap = StrokeCap.Round
-                    )
+                drawCircle(
+                    color = Color.White,
+                    radius = r,
+                    center = Offset(cx, y1)
+                )
+
+                val tick = Path().apply {
+                    moveTo(cx - r * 0.45f, y1)
+                    lineTo(cx - r * 0.1f, y1 + r * 0.4f)
+                    lineTo(cx + r * 0.5f, y1 - r * 0.35f)
                 }
+                drawPath(
+                    path = tick,
+                    color = logoBlue,
+                    style = Stroke(
+                        width = w * 0.055f,
+                        cap = StrokeCap.Round,
+                        join = StrokeJoin.Round
+                    )
+                )
+
+                drawLine(
+                    color = Color.White,
+                    start = Offset(w * 0.50f, y1),
+                    end = Offset(w * 0.92f, y1),
+                    strokeWidth = stroke,
+                    cap = StrokeCap.Round
+                )
+
+                drawCircle(
+                    color = Color.White,
+                    radius = w * 0.109f,
+                    center = Offset(cx, y2),
+                    style = Stroke(width = stroke)
+                )
+                drawLine(
+                    color = Color.White,
+                    start = Offset(w * 0.50f, y2),
+                    end = Offset(w * 0.92f, y2),
+                    strokeWidth = stroke,
+                    cap = StrokeCap.Round
+                )
             }
         }
 
